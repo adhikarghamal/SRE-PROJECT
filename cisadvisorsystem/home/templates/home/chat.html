@@ -1,0 +1,49 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Chat Room</h1>
+
+    <div id="chat-box">
+        {% for message in messages %}
+            <p><strong>{{ message.name }}:</strong> {{ message.text }}</p>
+        {% endfor %}
+    </div>
+
+    <form id="chat-form">
+        <input type="text" id="name-input" placeholder="Your name" autocomplete="off">
+        <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#chat-form').on('submit', function(e) {
+                e.preventDefault();
+                const name = $('#name-input').val() || 'Anonymous';
+                const message = $('#message-input').val();
+
+                $.ajax({
+                    url: "{% url 'send_message' %}",
+                    method: "POST",
+                    data: {
+                        'name': name,
+                        'message': message,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(data) {
+                        $('#chat-box').append(`<p><strong>${data.name}:</strong> ${data.message}</p>`);
+                        $('#message-input').val('');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

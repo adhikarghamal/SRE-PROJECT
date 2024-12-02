@@ -1,0 +1,22 @@
+<!-- match_responses.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matched Responses</title>
+</head>
+<body>
+    <h1>Matched Questions and Responses</h1>
+    <ul>
+        {% for text, response in matched_responses %}
+            <li>
+                <strong>Question:</strong> {{ text }} <br>
+                <strong>Response:</strong> {{ response }}
+            </li>
+        {% empty %}
+            <li>No matches found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
